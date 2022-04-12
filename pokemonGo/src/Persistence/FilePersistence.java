@@ -18,23 +18,23 @@ import java.util.ArrayList;
  * @author Raul
  */
 public class FilePersistence {
-    private final static String file_name;
-    
-    public static boolean saveItems(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException{
-        FileOutputStream write = null;
-        write = new FileOutputStream(file_name);
-        ObjectOutputStream StreamData = new ObjectOutputStream(write);
-        StreamData.writeObject(bag);
-        
-        return true;
-    }
-    
-    public static ArrayList<Pokemon> readItems(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException, ClassNotFoundException{
-        FileInputStream file = new FileInputStream(file_name);
-        ObjectInputStream StreamData = new ObjectInputStream(file);
-        
-        ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
-        
-        return read;
-    }
+//    private final static String file_name;
+//    
+//    public static boolean saveItems(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException{
+//        FileOutputStream write = null;
+//        write = new FileOutputStream(file_name);
+//        ObjectOutputStream StreamData = new ObjectOutputStream(write);
+//        StreamData.writeObject(bag);
+//        
+//        return true;
+//    }
+//    
+//    public static ArrayList<Pokemon> readItems(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException, ClassNotFoundException{
+//        FileInputStream file = new FileInputStream(file_name);
+//        ObjectInputStream StreamData = new ObjectInputStream(file);
+//        
+//        ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
+//        
+//        return read;
+//    }
 }

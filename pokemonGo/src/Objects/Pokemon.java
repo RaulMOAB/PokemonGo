@@ -16,6 +16,7 @@ public class Pokemon {
 
     public Pokemon(String name) {
         this.name = name;
+        this.CP = 0;
     }
 
     public Pokemon(String name, int CP) {
