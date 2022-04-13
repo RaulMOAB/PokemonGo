@@ -5,6 +5,7 @@
 package Objects;
 
 import java.util.Objects;
+import java.util.Random;
 
 /**
  *
@@ -16,12 +17,17 @@ public class Pokemon {
 
     public Pokemon(String name) {
         this.name = name;
-        this.CP = 0;
+         setCP(CP);
     }
 
     public Pokemon(String name, int CP) {
         this.name = name;
-        this.CP = CP;
+         setCP(CP);
+    }
+
+    public int setCP(int CP) {
+        Random r = new Random();
+        return this.CP = r.nextInt(100) + 1;
     }
 
     public String getName() {
@@ -55,8 +61,7 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        return "Pokemon: " + name + "\n"
-                + " CP: " + CP;
+        return "\t"+ name + "\t"+ " CP: " + CP;
     }
     
     

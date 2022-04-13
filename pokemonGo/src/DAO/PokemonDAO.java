@@ -5,7 +5,7 @@
 package DAO;
 
 import Objects.Pokemon;
-import java.io.BufferedWriter;
+import Persistence.FilePersistence;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -19,9 +19,14 @@ import java.util.Scanner;
  */
 public class PokemonDAO implements Basic_operations {
 
+    private ArrayList<String> nameList;
+    private ArrayList<Pokemon> pokemonBag;
+
     @Override
-    public boolean catchPokemon(Pokemon obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Pokemon catchPokemon() throws FileNotFoundException {
+        Pokemon wildPokemon = FilePersistence.catchWildPokemon(nameList);
+        
+       return wildPokemon;
     }
 
     @Override
@@ -49,22 +54,22 @@ public class PokemonDAO implements Basic_operations {
                 pass = file.nextLine();
             }
             file.close();
-            
+
             if (password.equals(pass)) {
                 return 1;
             } else {
                 return 0;
             }
-        } else {        
+        } else {
             return -1; //no existe user
         }
 
     }
 
     public void newUserLogin(String user_name, String password) throws IOException {
-         FileWriter writeNewUser = new FileWriter("users/"+user_name);
-         writeNewUser.write(password);
-         writeNewUser.close();
+        FileWriter writeNewUser = new FileWriter("users/" + user_name);
+        writeNewUser.write(password);
+        writeNewUser.close();
     }
 
 }

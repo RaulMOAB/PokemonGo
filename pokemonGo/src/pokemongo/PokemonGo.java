@@ -5,11 +5,16 @@
 package pokemongo;
 
 import DAO.PokemonDAO;
+import Objects.Pokemon;
 import Utilities.Menu;
+import Utilities.Option;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,11 +39,25 @@ public class PokemonGo {
     private void runApp() {
         bag = new PokemonDAO();
         displayLogo();
-        login();
+       // login();
         main_menu = new Menu("---- Menu ----");
+        addOptionsMenu();
+        int option;
+        do {
+            main_menu.displayMenu();
+            option = main_menu.choose();
+            switch (option) {
+                case 1:
+                    catchPokemon();
+                    break;
+                default:
+                    System.out.println("Opción incorrecta");
+            }
+        } while (option != 0);
+        
     }
 
-    private void displayLogo() {
+    private void displayLogo() {//Hacer la funcion en el Dao?
         File logo = new File("logo/logo.pok");
         Scanner read;
         try {
@@ -81,6 +100,41 @@ public class PokemonGo {
             Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void catchPokemon() {
+        try {
+            Pokemon wildPokemon = bag.catchPokemon();
+            if (wildPokemon != null) {              
+                displayPokemonAscii(wildPokemon);
+                 System.out.println(wildPokemon.toString());
+            }
+  
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void addOptionsMenu() {
+            main_menu.add(new Option("Salir"));
+            main_menu.add(new Option("Cazar Pokemons"));
+
+    }
+
+    private void displayPokemonAscii(Pokemon wildPokemon) {
+        File readFile = new File("pokemons/ascii/"+ wildPokemon.getName() + ".pok");
+        try {
+            Scanner asciiPokemon = new Scanner(readFile);
+            while(asciiPokemon.hasNext()){
+                String ascii = asciiPokemon.nextLine();
+                String pokeFormat= ascii.replace("printf(\"", "");
+                System.out.println(pokeFormat);
+                
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }
