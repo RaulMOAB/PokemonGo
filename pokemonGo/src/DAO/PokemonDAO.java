@@ -23,15 +23,23 @@ public class PokemonDAO implements Basic_operations {
     private ArrayList<Pokemon> pokemonBag;
 
     @Override
-    public Pokemon catchPokemon() throws FileNotFoundException {
+    public Pokemon appearsPokemon() throws FileNotFoundException {
         Pokemon wildPokemon = FilePersistence.catchWildPokemon(nameList);
         
        return wildPokemon;
     }
+    public boolean hunted(int key, int answer, Pokemon wild){
+        if(key==answer){
+            catchPokemon(wild);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     @Override
     public ArrayList<Pokemon> displayBag() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pokemonBag;
     }
 
     @Override
@@ -70,6 +78,24 @@ public class PokemonDAO implements Basic_operations {
         FileWriter writeNewUser = new FileWriter("users/" + user_name);
         writeNewUser.write(password);
         writeNewUser.close();
+    }
+
+    @Override
+    public int getAmount() {
+        return pokemonBag.size();
+    }
+
+    public int getDifficult(Pokemon wildPokemon) {
+        return (int)wildPokemon.getCP()/10;
+    }
+
+    public boolean catchPokemon(Pokemon add) {
+        if(pokemonBag.contains(add)){
+            pokemonBag.add(add);
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

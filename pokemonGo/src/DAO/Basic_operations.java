@@ -13,8 +13,10 @@ import java.util.ArrayList;
  * @author alumne
  */
 public interface Basic_operations {
-    public Pokemon catchPokemon() throws FileNotFoundException;//cazar pokemon
+    public Pokemon appearsPokemon() throws FileNotFoundException;//cazar pokemon
+    public boolean catchPokemon(Pokemon add);
     public ArrayList<Pokemon> displayBag();
     public void transferPokemon();
     public void getTransferedPokemon();//recibir pokemon transferido
+    public int getAmount();
 }

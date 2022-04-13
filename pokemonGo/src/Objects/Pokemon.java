@@ -4,6 +4,7 @@
  */
 package Objects;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import java.util.Random;
  *
  * @author alumne
  */
-public class Pokemon {
+public class Pokemon implements Serializable, Comparable<Pokemon>{
     private final String name;
     private int CP;
 
@@ -62,6 +63,18 @@ public class Pokemon {
     @Override
     public String toString() {
         return "\t"+ name + "\t"+ " CP: " + CP;
+    }
+
+    @Override
+    public int compareTo(Pokemon o) {
+        if(this.getCP()== o.getCP()){
+            return 0;
+        }
+        else if(this.getCP()>o.getCP()){
+            return 1;
+        }else{
+            return -1;
+        }
     }
     
     

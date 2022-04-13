@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -49,6 +50,9 @@ public class PokemonGo {
             switch (option) {
                 case 1:
                     catchPokemon();
+                    break;
+                case 2:
+                    displayMyBag();
                     break;
                 default:
                     System.out.println("Opción incorrecta");
@@ -104,10 +108,11 @@ public class PokemonGo {
 
     private void catchPokemon() {
         try {
-            Pokemon wildPokemon = bag.catchPokemon();
+            Pokemon wildPokemon = bag.appearsPokemon();
             if (wildPokemon != null) {              
                 displayPokemonAscii(wildPokemon);
-                 System.out.println(wildPokemon.toString());
+                System.out.println(wildPokemon.toString());
+                startHunting(wildPokemon);
             }
   
         } catch (FileNotFoundException ex) {
@@ -118,6 +123,7 @@ public class PokemonGo {
     private void addOptionsMenu() {
             main_menu.add(new Option("Salir"));
             main_menu.add(new Option("Cazar Pokemons"));
+            main_menu.add(new Option("Listar Pokemons de la mochila"));
 
     }
 
@@ -136,5 +142,39 @@ public class PokemonGo {
         }
         
     }
+
+    //FASE 6
+    private void displayMyBag() {
+        ArrayList<Pokemon> mybag = bag.displayBag();
+        //FASE 8
+        Collections.sort(mybag);
+        for (Pokemon pokemon : mybag) {
+            System.out.println(pokemon.toString());
+        }
+        displayAmountOfPokemons();
+    }
+
+    private void displayAmountOfPokemons() {
+        System.out.println(bag.getAmount());
+    }
+    //FIN FASE 6
+    
+    //FASE 7
+    private void startHunting(Pokemon wildPokemon) {
+        Random r = new Random();
+        Scanner sc = new Scanner(System.in);
+        int i = bag.getDifficult(wildPokemon);
+        System.out.println("Numero del 1 a "+i);
+        int key = r.nextInt(i)+1;
+        System.out.println("chuleta:"+key);
+        int answer = sc.nextInt();
+        
+        if(bag.hunted(key,answer,wildPokemon)){
+            System.out.println("Felicidades, has capturado a "+wildPokemon.getName()+".");
+        }else{
+            System.out.println(wildPokemon.getName()+" se ha escapado.");
+        }
+    }
+    //FIN FASE 7
 
 }
