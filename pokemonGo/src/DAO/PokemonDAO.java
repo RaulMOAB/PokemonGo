@@ -19,8 +19,8 @@ import java.util.Scanner;
  */
 public class PokemonDAO implements Basic_operations {
 
-    private ArrayList<String> nameList;
-    private ArrayList<Pokemon> pokemonBag;
+    private ArrayList<String> nameList = new ArrayList<String>();
+    private ArrayList<Pokemon> pokemonBag = new ArrayList<>();
 
     @Override
     public Pokemon appearsPokemon() throws FileNotFoundException {
@@ -28,9 +28,9 @@ public class PokemonDAO implements Basic_operations {
         
        return wildPokemon;
     }
-    public boolean hunted(int key, int answer, Pokemon wild){
+    public boolean catchPokemon(int key, int answer, Pokemon wild){
         if(key==answer){
-            catchPokemon(wild);
+            pokemonBag.add(wild);
             return true;
         }else{
             return false;
@@ -86,16 +86,11 @@ public class PokemonDAO implements Basic_operations {
     }
 
     public int getDifficult(Pokemon wildPokemon) {
-        return (int)wildPokemon.getCP()/10;
-    }
-
-    public boolean catchPokemon(Pokemon add) {
-        if(pokemonBag.contains(add)){
-            pokemonBag.add(add);
-            return true;
-        }else{
-            return false;
+        int i = wildPokemon.getCP()/10;
+        if(i==0){
+            i=1;
         }
+        return i;
     }
 
 }

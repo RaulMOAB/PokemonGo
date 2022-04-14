@@ -168,8 +168,8 @@ public class PokemonGo {
         int key = r.nextInt(i)+1;
         System.out.println("chuleta:"+key);
         int answer = sc.nextInt();
-        
-        if(bag.hunted(key,answer,wildPokemon)){
+        boolean isHunted =  bag.catchPokemon(key,answer,wildPokemon);
+        if(isHunted){
             System.out.println("Felicidades, has capturado a "+wildPokemon.getName()+".");
         }else{
             System.out.println(wildPokemon.getName()+" se ha escapado.");
