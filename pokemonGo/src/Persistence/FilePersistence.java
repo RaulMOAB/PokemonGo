@@ -21,26 +21,27 @@ import java.util.Scanner;
  * @author Raul
  */
 public class FilePersistence {
-    private final static String file_name = "mochila.dat";
+    private final static String file_name = "_mochila.dat";
     
-    public static boolean saveBag(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException{
-        FileOutputStream write = null;
-        write = new FileOutputStream(file_name);
-        ObjectOutputStream StreamData = new ObjectOutputStream(write);
+ public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException{
+        FileOutputStream write;
+        write = new FileOutputStream("users/mochilas/" + user_name + file_name);
+        ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(bag);
         
         return true;
     }
     
-    public static ArrayList<Pokemon> readBag(ArrayList<Pokemon> bag) throws FileNotFoundException, IOException, ClassNotFoundException{
-        FileInputStream file = new FileInputStream(file_name);
+    public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException{
+        FileInputStream file = new FileInputStream("users/mochilas/" +user_name + file_name);
+        
         ObjectInputStream StreamData = new ObjectInputStream(file);
         
         ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
         
         return read;
     }
-
+    
     public static Pokemon catchWildPokemon(ArrayList<String> nameList) throws FileNotFoundException {
         nameList = new ArrayList<>();
         Random r = new Random();

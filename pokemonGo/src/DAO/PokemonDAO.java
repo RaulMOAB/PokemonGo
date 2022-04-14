@@ -92,5 +92,20 @@ public class PokemonDAO implements Basic_operations {
         }
         return i;
     }
+    
+      public int userBag(String user_name) throws IOException{
+       if( FilePersistence.saveBag(pokemonBag, user_name)){
+           return pokemonBag.size();
+       }else{
+           return 0;
+       }
+    }
+    
+    public int recoverBag(String user_name) throws IOException, FileNotFoundException, ClassNotFoundException{
+      pokemonBag = FilePersistence.readBag(user_name);
+
+      return pokemonBag.size();
+    }
+
 
 }

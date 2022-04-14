@@ -40,7 +40,7 @@ public class PokemonGo {
     private void runApp() {
         bag = new PokemonDAO();
         displayLogo();
-       // login();
+        String user_name =  login();
         main_menu = new Menu("---- Menu ----");
         addOptionsMenu();
         int option;
@@ -53,6 +53,9 @@ public class PokemonGo {
                     break;
                 case 2:
                     displayMyBag();
+                    break;
+                case 0:
+                    saveAndExit(user_name);
                     break;
                 default:
                     System.out.println("Opción incorrecta");
@@ -75,7 +78,7 @@ public class PokemonGo {
 
     }
 
-    private void login() {
+    private String login() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Introduzca el nombre de usuario");
         String name = sc.nextLine();
@@ -86,6 +89,7 @@ public class PokemonGo {
         try {
             if (bag.validateUser(user_name, password) == 1) {
                 System.out.println("Login correcto");
+                System.out.println("Se han cargado " + bag.recoverBag(name) + " pokemons");
             } else if (bag.validateUser(user_name, password) == 0) {
                 System.out.println("Contraseña incorrecta");
             }
@@ -102,8 +106,10 @@ public class PokemonGo {
 
         } catch (IOException ex) {
             Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+            return name;
     }
 
     private void catchPokemon() {
@@ -155,7 +161,7 @@ public class PokemonGo {
     }
 
     private void displayAmountOfPokemons() {
-        System.out.println(bag.getAmount());
+        System.out.println("Pokemons en la mochila:" + bag.getAmount());
     }
     //FIN FASE 6
     
@@ -164,7 +170,7 @@ public class PokemonGo {
         Random r = new Random();
         Scanner sc = new Scanner(System.in);
         int i = bag.getDifficult(wildPokemon);
-        System.out.println("Numero del 1 a "+i);
+        System.out.println("Numero del 1 a " + i);
         int key = r.nextInt(i)+1;
         System.out.println("chuleta:"+key);
         int answer = sc.nextInt();
@@ -176,5 +182,14 @@ public class PokemonGo {
         }
     }
     //FIN FASE 7
+
+    private void saveAndExit(String user_name) {
+        try {
+            System.out.println("Se han guardado " +  bag.userBag(user_name) + " pokemons correctamente");
+           
+        } catch (IOException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }
