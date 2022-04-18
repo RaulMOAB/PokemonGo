@@ -107,5 +107,9 @@ public class PokemonDAO implements Basic_operations {
       return pokemonBag.size();
     }
 
+    public boolean existPokemonInMyBag(Pokemon wildPokemon) {
+        return pokemonBag.contains(wildPokemon);
+    }
+
 
 }

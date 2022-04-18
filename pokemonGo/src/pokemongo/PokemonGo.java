@@ -169,16 +169,25 @@ public class PokemonGo {
     private void startHunting(Pokemon wildPokemon) {
         Random r = new Random();
         Scanner sc = new Scanner(System.in);
-        int i = bag.getDifficult(wildPokemon);
-        System.out.println("Numero del 1 a " + i);
-        int key = r.nextInt(i)+1;
-        System.out.println("chuleta:"+key);
-        int answer = sc.nextInt();
-        boolean isHunted =  bag.catchPokemon(key,answer,wildPokemon);
-        if(isHunted){
-            System.out.println("Felicidades, has capturado a "+wildPokemon.getName()+".");
+        boolean exist= bag.existPokemonInMyBag(wildPokemon);
+        boolean capture = false;
+        if(exist){
+           capture = decision(exist,wildPokemon);
+        }
+        if(!exist || exist && capture){
+            int i = bag.getDifficult(wildPokemon);
+            System.out.println("Numero del 1 a " + i);
+            int key = r.nextInt(i)+1;
+            System.out.println("chuleta:"+key);
+            int answer = sc.nextInt();
+            boolean isHunted =  bag.catchPokemon(key,answer,wildPokemon);
+            if(isHunted){
+                System.out.println("Felicidades, has capturado a "+wildPokemon.getName()+".");
+            }else{
+                System.out.println(wildPokemon.getName()+" se ha escapado.");
+            }
         }else{
-            System.out.println(wildPokemon.getName()+" se ha escapado.");
+            System.out.println("Has dejado escapar a "+wildPokemon.getName());
         }
     }
     //FIN FASE 7
@@ -189,6 +198,26 @@ public class PokemonGo {
            
         } catch (IOException ex) {
             Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private boolean decision(boolean exist, Pokemon wildPokemon) {
+        if(exist){
+            char answer;
+            Scanner sc = new Scanner (System.in);
+            System.out.println("Ya tienes en tu mochila un "+wildPokemon.getName()+"\n"
+                    + "Quieres capturarlo igualmente? (s/n)");
+            do{
+            answer = sc.nextLine().charAt(0);
+            }while(answer!='n'&& answer!='s');
+            if(answer=='s'){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }else{
+            return false;
         }
     }
 
