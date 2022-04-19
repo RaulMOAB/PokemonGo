@@ -55,6 +55,9 @@ public class PokemonGo {
                 case 3:
                     transferPokemon(user_name);
                     break;
+                case 4:
+                    getPokemon(user_name);//va el user qeu te transfeire en teoria
+                    break;
                 case 0:
                     saveAndExit(user_name);
                     break;
@@ -132,6 +135,7 @@ public class PokemonGo {
         main_menu.add(new Option("Cazar Pokemons"));
         main_menu.add(new Option("Listar Pokemons de la mochila"));
         main_menu.add(new Option("Transefir Pokemon"));
+         main_menu.add(new Option("Recibir Pokemon"));
 
     }
 
@@ -224,33 +228,41 @@ public class PokemonGo {
         }
     }
 
-    private void transferPokemon(String user_name) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("A que jugador quieres transferir un Pokemon?");
-            String user_transfer = sc.nextLine();
-            String pokemon_name;
-            //boolean check_pokemon;
-            //if (user_transfer.equalsIgnoreCase(user_name)) {// mirarlo bien
-                System.out.println("Qué Pokemon quieres transferir?");
-                pokemon_name = sc.nextLine();
-                Pokemon aux = new Pokemon(pokemon_name);
-                try {
-                 
-                    if (bag.transferPokemon(user_name, aux) != null) {
-                        System.out.println("Se ha transferido el Pokemon " + aux.getName() + " correctamente");
-                        System.out.println("El Pokemon " + aux.getName() + " se ha borrado de tu mochila");
-                    }else{
-                        System.err.println("Pokemon no encontrado, imposible transferir");
-                    }
-                
-                
-                } catch (IOException ex) {
-                    Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-               
-        
+    private String transferPokemon(String user_name) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("A que jugador quieres transferir un Pokemon?");
+        String user_transfer = sc.nextLine();
+        String pokemon_name;
+        //boolean check_pokemon;
+        //if (user_transfer.equalsIgnoreCase(user_name)) {// mirarlo bien
+        System.out.println("Qué Pokemon quieres transferir?");
+        pokemon_name = sc.nextLine();
+        Pokemon aux = new Pokemon(pokemon_name);
+        try {
+
+            if (bag.transferPokemon(user_name, aux) != null) {//arreglar transfiere todos los pokemons del mismo nombre
+                System.out.println("Se ha transferido el Pokemon " + aux.getName() + " correctamente");
+                System.out.println("El Pokemon " + aux.getName() + " se ha borrado de tu mochila");
+            } else {
+                System.err.println("Pokemon no encontrado, imposible transferir");
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user_transfer;
+    }
+
+    private void getPokemon(String user_transfer) {
+        try {
+            bag.getTransferedPokemon(user_transfer);
+        } catch (IOException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -21,42 +21,45 @@ import java.util.Scanner;
  * @author Raul
  */
 public class FilePersistence {
+
     private final static String FILE_NAME = "_mochila.dat";
+    private final static String FILE_TRANSFER = "pokemons/transfers/";
+
     //poner carpeta como atributo
- public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException{
+    public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException {
         FileOutputStream write;
         write = new FileOutputStream("users/mochilas/" + user_name + FILE_NAME);
         ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(bag);
-        
+
         return true;
     }
-    
-    public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException{
-        FileInputStream file = new FileInputStream("users/mochilas/" +user_name + FILE_NAME);
-        
+
+    public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream file = new FileInputStream("users/mochilas/" + user_name + FILE_NAME);
+
         ObjectInputStream StreamData = new ObjectInputStream(file);
-        
+
         ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
-        
+
         return read;
     }
-    
+
     public static Pokemon catchWildPokemon(ArrayList<String> nameList) throws FileNotFoundException {
         nameList = new ArrayList<>();
         Random r = new Random();
         File nombres = new File("pokemons/nombres.pok");
         Scanner read = new Scanner(nombres);
-        
+
         while (read.hasNextLine()) {
             String name = read.nextLine();
             nameList.add(name);
         }
         read.close();
-        
+
         int randomName = r.nextInt(nameList.size());
         Pokemon wildPokemon = new Pokemon(nameList.get(randomName));
-       
+
         return wildPokemon;
     }
 
@@ -66,8 +69,18 @@ public class FilePersistence {
         ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(aux);
         return true;
-        
+
     }
-    
-  
+
+    public static ArrayList<Pokemon>  readTransferFile(String user_transfer) throws FileNotFoundException, IOException, ClassNotFoundException {
+        
+        FileInputStream file = new FileInputStream(FILE_TRANSFER + user_transfer  + ".dat");
+
+        ObjectInputStream StreamData = new ObjectInputStream(file);
+
+        ArrayList<Pokemon> pokemonTransfered =  (ArrayList<Pokemon>) StreamData.readObject();//algo falla aqui
+
+        return pokemonTransfered;
+    }
+
 }

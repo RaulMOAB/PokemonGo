@@ -12,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,15 +46,6 @@ public class PokemonDAO implements Basic_operations {
 
     @Override
     public Pokemon transferPokemon(String user_name, Pokemon aux)throws FileNotFoundException, IOException, ClassNotFoundException {
-        
-        System.out.println("Nombre user " + user_name);
-          //ArrayList<Pokemon> pokemonToTransfer = new ArrayList<>();
-          //pokemonToTransfer.add(aux);
-      
-          
-          String searchPokemon = aux.getName();
-          System.out.println("Nombre a buscar " + searchPokemon);
-          System.out.println("Imprimo pokemonBag " + pokemonBag.toString());
           int index = pokemonBag.indexOf(aux);
           System.out.println("Indice encontrado " + index);
           if (index != -1) {// encuentra el pokemon a transferir
@@ -65,8 +58,10 @@ public class PokemonDAO implements Basic_operations {
     }
 
     @Override
-    public void getTransferedPokemon() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void getTransferedPokemon(String user_transfer) throws IOException, ClassNotFoundException{
+        System.out.println(user_transfer);
+            FilePersistence.readTransferFile(user_transfer);
+   
     }
 
     public int validateUser(String user_name, String password) throws FileNotFoundException, IOException {

@@ -18,6 +18,6 @@ public interface Basic_operations {
     public boolean catchPokemon(int key, int answer, Pokemon wild);
     public ArrayList<Pokemon> displayBag();
     public Pokemon transferPokemon(String user_name, Pokemon pok)throws FileNotFoundException, IOException, ClassNotFoundException;
-    public void getTransferedPokemon();//recibir pokemon transferido
+    public void getTransferedPokemon(String user_transfer)throws IOException, ClassNotFoundException;//recibir pokemon transferido
     public int getAmount();
 }
