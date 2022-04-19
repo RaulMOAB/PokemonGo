@@ -6,6 +6,7 @@ package DAO;
 
 import Objects.Pokemon;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ public interface Basic_operations {
     public Pokemon appearsPokemon() throws FileNotFoundException;//aparece pokemon
     public boolean catchPokemon(int key, int answer, Pokemon wild);
     public ArrayList<Pokemon> displayBag();
-    public void transferPokemon();
+    public void transferPokemon(String user_name, Pokemon pok)throws FileNotFoundException, IOException, ClassNotFoundException;
     public void getTransferedPokemon();//recibir pokemon transferido
     public int getAmount();
 }

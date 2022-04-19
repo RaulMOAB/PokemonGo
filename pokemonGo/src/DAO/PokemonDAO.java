@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class PokemonDAO implements Basic_operations {
 
-    private ArrayList<String> nameList = new ArrayList<String>();
+    private ArrayList<String> nameList = new ArrayList<>();
     private ArrayList<Pokemon> pokemonBag = new ArrayList<>();
 
     @Override
@@ -43,8 +43,14 @@ public class PokemonDAO implements Basic_operations {
     }
 
     @Override
-    public void transferPokemon() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void transferPokemon(String user_name, Pokemon aux)throws FileNotFoundException, IOException, ClassNotFoundException {
+          ArrayList<Pokemon> pokemonToTransfer = FilePersistence.readBag(user_name);
+          String searchPokemon = aux.getName();
+          int index = pokemonToTransfer.indexOf(searchPokemon);
+          
+          if (index != -1) {// encuentra el pokemon a transferir
+            
+        }
     }
 
     @Override
@@ -56,7 +62,7 @@ public class PokemonDAO implements Basic_operations {
         File users = new File("users/" + user_name);
         Scanner file = new Scanner(users);
 
-        if (users.exists()) {
+        if (users.exists()) {//
             String pass = "";
             while (file.hasNext()) {
                 pass = file.nextLine();
@@ -86,7 +92,7 @@ public class PokemonDAO implements Basic_operations {
     }
 
     public int getDifficult(Pokemon wildPokemon) {
-        int i = wildPokemon.getCP()/10;
+        int i = wildPokemon.getCP() / 10;
         if(i==0){
             i=1;
         }

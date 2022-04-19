@@ -21,11 +21,11 @@ import java.util.Scanner;
  * @author Raul
  */
 public class FilePersistence {
-    private final static String file_name = "_mochila.dat";
+    private final static String FILE_NAME = "_mochila.dat";
     
  public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException{
         FileOutputStream write;
-        write = new FileOutputStream("users/mochilas/" + user_name + file_name);
+        write = new FileOutputStream("users/mochilas/" + user_name + FILE_NAME);
         ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(bag);
         
@@ -33,7 +33,7 @@ public class FilePersistence {
     }
     
     public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException{
-        FileInputStream file = new FileInputStream("users/mochilas/" +user_name + file_name);
+        FileInputStream file = new FileInputStream("users/mochilas/" +user_name + FILE_NAME);
         
         ObjectInputStream StreamData = new ObjectInputStream(file);
         
