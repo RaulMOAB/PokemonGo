@@ -62,11 +62,11 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {//esta un poco raro puesto
         boolean exist = false;
         if(obj instanceof Pokemon){
             Pokemon p = (Pokemon) obj;
-            exist=this.name.equals(p.name);
+            exist=this.name.equalsIgnoreCase(p.name);
         }
         return exist;
     }

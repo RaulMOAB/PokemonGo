@@ -22,7 +22,7 @@ import java.util.Scanner;
  */
 public class FilePersistence {
     private final static String FILE_NAME = "_mochila.dat";
-    
+    //poner carpeta como atributo
  public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException{
         FileOutputStream write;
         write = new FileOutputStream("users/mochilas/" + user_name + FILE_NAME);
@@ -58,6 +58,15 @@ public class FilePersistence {
         Pokemon wildPokemon = new Pokemon(nameList.get(randomName));
        
         return wildPokemon;
+    }
+
+    public static boolean transfer(String user_name, Pokemon aux) throws FileNotFoundException, IOException {
+        FileOutputStream write;
+        write = new FileOutputStream("pokemons/transfers/" + user_name + ".dat");
+        ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
+        StreamData.writeObject(aux);
+        return true;
+        
     }
     
   

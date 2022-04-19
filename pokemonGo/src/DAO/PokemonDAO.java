@@ -43,14 +43,25 @@ public class PokemonDAO implements Basic_operations {
     }
 
     @Override
-    public void transferPokemon(String user_name, Pokemon aux)throws FileNotFoundException, IOException, ClassNotFoundException {
-          ArrayList<Pokemon> pokemonToTransfer = FilePersistence.readBag(user_name);
-          String searchPokemon = aux.getName();
-          int index = pokemonToTransfer.indexOf(searchPokemon);
+    public Pokemon transferPokemon(String user_name, Pokemon aux)throws FileNotFoundException, IOException, ClassNotFoundException {
+        
+        System.out.println("Nombre user " + user_name);
+          //ArrayList<Pokemon> pokemonToTransfer = new ArrayList<>();
+          //pokemonToTransfer.add(aux);
+      
           
+          String searchPokemon = aux.getName();
+          System.out.println("Nombre a buscar " + searchPokemon);
+          System.out.println("Imprimo pokemonBag " + pokemonBag.toString());
+          int index = pokemonBag.indexOf(aux);
+          System.out.println("Indice encontrado " + index);
           if (index != -1) {// encuentra el pokemon a transferir
-            
-        }
+            FilePersistence.transfer(user_name, aux);
+            //si ha ido bien borras por posicion
+            return pokemonBag.remove(index);
+        }else{
+              return null;
+          }
     }
 
     @Override

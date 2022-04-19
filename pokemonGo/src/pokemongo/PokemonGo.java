@@ -213,7 +213,7 @@ public class PokemonGo {
                 answer = sc.nextLine().charAt(0);
             } while (answer != 'n' && answer != 's');
 
-            if (answer == 's') {
+            if (answer == 's') {// condicional redundante
                 return true;
             } else {
                 return false;
@@ -229,18 +229,28 @@ public class PokemonGo {
             System.out.println("A que jugador quieres transferir un Pokemon?");
             String user_transfer = sc.nextLine();
             String pokemon_name;
-            boolean check_pokemon;
-            if (user_transfer.equalsIgnoreCase(user_name)) {
+            //boolean check_pokemon;
+            //if (user_transfer.equalsIgnoreCase(user_name)) {// mirarlo bien
                 System.out.println("Qué Pokemon quieres transferir?");
-                pokemon_name = sc.nextLine().toLowerCase();
+                pokemon_name = sc.nextLine();
                 Pokemon aux = new Pokemon(pokemon_name);
-                check_pokemon = bag.existPokemonInMyBag(aux);
+                try {
+                 
+                    if (bag.transferPokemon(user_name, aux) != null) {
+                        System.out.println("Se ha transferido el Pokemon " + aux.getName() + " correctamente");
+                        System.out.println("El Pokemon " + aux.getName() + " se ha borrado de tu mochila");
+                    }else{
+                        System.err.println("Pokemon no encontrado, imposible transferir");
+                    }
                 
-                if (check_pokemon) {// se puede transferir
-                    bag.transferPokemon(user_name, aux);
+                
+                } catch (IOException ex) {
+                    Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
                 }
                
-        }
+        
     }
 
 }
