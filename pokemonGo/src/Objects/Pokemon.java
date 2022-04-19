@@ -51,13 +51,12 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
 
     @Override
     public int compareTo(Pokemon o) {
-        if(this.getCP()== o.getCP()&& this.getName().equals(o.name)){
-            return 0;
-        }
-        else if(this.getCP()>o.getCP() && this.getName().equals(o.name)){
-            return 1;
-        }else{
-            return -1;
+        int compare = getName().compareTo(o.getName()); 
+        if( compare == 0 ) {
+            // si compare es 0 significa que su nombre es igual, compara y retorna en base a CP
+            return getCP() - o.getCP(); //al restar va a dar negativo si es inferior al CP, positivo si es superior al CP o 0 si son iguales en CP
+        } else {
+           return compare;
         }
     }
 
