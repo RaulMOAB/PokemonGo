@@ -22,6 +22,11 @@ public class PokemonDAO implements Basic_operations {
     private final ArrayList<String> pokemonNameList = new ArrayList<>();
     private ArrayList<Pokemon> pokemonBag = new ArrayList<>();
 
+    /**
+     * 
+     * @return
+     * @throws FileNotFoundException 
+     */
     @Override
     public Pokemon appearsPokemon() throws FileNotFoundException {
         Pokemon wildPokemon = FilePersistence.catchWildPokemon(pokemonNameList);
@@ -61,6 +66,14 @@ public class PokemonDAO implements Basic_operations {
         return pokemonTransfered;
     }
 
+    /**
+     * Validar si el usuario introducuido existe, y si la contraseña es correcta.
+     * @param user_name
+     * @param password
+     * @return 1 si El usuario existe y la contraseña es correcta, 0 si el usuario existe pero la contraseña es incorrecta, y -1 si el usuario ni siquiera existe.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public int validateUserPassword(String user_name, String password) throws FileNotFoundException, IOException {
         File users = new File("users/" + user_name);
         Scanner file = new Scanner(users);
@@ -80,18 +93,27 @@ public class PokemonDAO implements Basic_operations {
             return -1; //no existe user
         }
     }
-
+    /**
+     * Se registrara cualquier usuario incorrecto introducido y lo guardara en la carpeta de users.
+     * @param user_name
+     * @param password
+     * @throws IOException 
+     */
     public void newUserLogin(String user_name, String password) throws IOException {
         FileWriter writeNewUser = new FileWriter("users/" + user_name);
         writeNewUser.write(password);
         writeNewUser.close();
     }
-
+    
     @Override
     public int getNumPokemon() {
         return pokemonBag.size();
     }
 
+    /**
+     * @param wildPokemon
+     * @return devolvera un numero entre el 1 al 10, dependiendo de la division del CP del pokemon pasado por parametro entre 10, en caso que de menor que 1 devolvera 1.
+     */
     public int getDifficult(Pokemon wildPokemon) {
         int i = wildPokemon.getCP() / 10;
         if (i == 0) {
@@ -100,6 +122,12 @@ public class PokemonDAO implements Basic_operations {
         return i;
     }
 
+    /**
+     * Guardara la mochila del usuario pasado como parametro
+     * @param user_name
+     * @return Cantidad de pokemons guardados
+     * @throws IOException 
+     */
     public int userBag(String user_name) throws IOException {
         if (FilePersistence.saveBag(pokemonBag, user_name)) {
             return pokemonBag.size();
@@ -108,20 +136,42 @@ public class PokemonDAO implements Basic_operations {
         }
     }
 
+    /**
+     * Recuperara la mochila del usuario pasado como parametro
+     * @param user_name
+     * @return Cantidad de pokemons recuperados.
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws ClassNotFoundException 
+     */
     public int recoverBag(String user_name) throws IOException, FileNotFoundException, ClassNotFoundException {
         pokemonBag = FilePersistence.readBag(user_name);
         return pokemonBag.size();
     }
 
+    /**
+     * Comprueba si existe ya el pokemon salvaje (por nombre) en la mochila.
+     * @param wildPokemon
+     * @return TRUE si existe, FALSE si no existe.
+     */
     public boolean isPokemonInBag(Pokemon wildPokemon) {
         return pokemonBag.contains(wildPokemon);
     }
 
+    /**
+     * Comprueba si existe el usuario pasado por parametro
+     * @param user_transfer
+     * @return TRUE si existe, FALSE si no existe
+     */
     public boolean checkUserName(String user_transfer) {
         File validate = new File("users/user_" + user_transfer + ".dat");
         return validate.exists();
     }
 
+    /**
+     * @return ArrayList con los nombres de todos los usuarios.
+     * @throws FileNotFoundException 
+     */
     public ArrayList<String> getPlayers() throws FileNotFoundException {
           return FilePersistence.readPlayers();
     }

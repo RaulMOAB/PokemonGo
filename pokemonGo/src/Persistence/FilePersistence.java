@@ -26,6 +26,16 @@ public class FilePersistence {
     private final static String FILE_TRANSFER = "pokemons/transfers/";
     private final static String FILE_BAG = "users/mochilas/";
 
+    /**
+     * Creara un fichero en la ruta de mochilas, el archivo contendra en el nombre, el nombre del usuario pasado como parametro.
+     * Leera el ArrayList pasado como parametro para traducirlo a binario y escribira en el archivo creado, o ya existente, todos los objetos que tenga la mochila.
+     * En resumen guarda la mochila.
+     * @param bag
+     * @param user_name
+     * @return TRUE si se ha guardado correctamente, FALSE si no se ha guardado.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException {
         FileOutputStream write;
         write = new FileOutputStream(FILE_BAG + user_name + FILE_NAME);
@@ -33,14 +43,29 @@ public class FilePersistence {
         StreamData.writeObject(bag);
         return true;
     }
-
+    /**
+     * Leera el archivo de la mochila del nombre de usuario pasado como parametro
+     * Cogera el contenido del archivo y lo metera en un Arraylist
+     * @param user_name
+     * @return ArrayList con el contenido del archivo de la mochila del usuario
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(FILE_BAG + user_name + FILE_NAME);
         ObjectInputStream StreamData = new ObjectInputStream(file);
         ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
         return read;
     }
-
+    /**
+     * Lee el archivo donde se encuentran los nombres de los pokemons
+     * para luego añadirlos de linea en linea a un ArrayList de Strings
+     * @param nameList
+     * @return Retorna un objeto creado con el nombre aleatorio que haya salido
+     * en el Arraylist.(CP aleatorio tambien gracias al setter que esta en el constructor)
+     * @throws FileNotFoundException 
+     */
     public static Pokemon catchWildPokemon(ArrayList<String> nameList) throws FileNotFoundException {
         nameList = new ArrayList<>();
         Random r = new Random();
@@ -58,7 +83,15 @@ public class FilePersistence {
 
         return wildPokemon;
     }
-
+    /**
+     * Creara un archivo de transferencia con el nombre pasado como parametro del usuario al que se lo quiere transferir
+     * Escribira el Pokemon pasado por parametro que va a transferir el usuario en el archivo de transaferencia.
+     * @param user_name
+     * @param aux
+     * @return TRUE si se ha tranferido correctamente, FALSE si no se ha podido transferir.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public static boolean transfer(String user_name, Pokemon aux) throws FileNotFoundException, IOException {
         FileOutputStream write;
         write = new FileOutputStream(FILE_TRANSFER + user_name + ".dat");
@@ -67,14 +100,26 @@ public class FilePersistence {
         return true;
 
     }
-
+    /**
+     * Leera el archivo con el nombre pasado por parametro del usuario que va a recoger el pokemon transferido.
+     * Una vez leido lo pasara en formato de Objeto Pokemon
+     * @param user_name
+     * @return devolvera el Pokemon pasado por el archivo de transferencia,si no hay nada devolvera null
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public static Pokemon readTransferFile(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(FILE_TRANSFER + user_name + ".dat");
         ObjectInputStream StreamData = new ObjectInputStream(file);
         Pokemon pokemonTransfered = (Pokemon) StreamData.readObject();
         return pokemonTransfered;
     }
-
+    /**
+     * Borrara el archivo de transferencia ya usado
+     * @param user_name
+     * @return TRUE si lo elimina o FALSE si no lo elimina
+     */
     public static boolean deleteFile(String user_name) {
         File fileToDelete = new File(FILE_TRANSFER + user_name + ".dat");
         if (fileToDelete.exists()) {
@@ -84,7 +129,11 @@ public class FilePersistence {
             return false;
         }
     }
-
+    /**
+     * Recogera un array de archivos, donde se limpiara todos los nombres de los archivos solo dejando el nombre del usuario
+     * @return ArrayList de String de los nombres de todos los usuarios registrados del momento.
+     * @throws FileNotFoundException 
+     */
     public static ArrayList<String> readPlayers() throws FileNotFoundException {
       ArrayList<String> playerNameList = new ArrayList<>();
        File players = new File(FILE_BAG);//"users/mochilas/"

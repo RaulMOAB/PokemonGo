@@ -96,40 +96,47 @@ public class PokemonGo {
      */
     private boolean login() {
         Scanner sc = new Scanner(System.in);
+        Boolean acess = false;
         System.out.println("Introduzca el nombre de usuario");
         user_name = sc.nextLine();
         String user_File_name = "user_" + user_name + ".dat";
-        System.out.println("Introduce la contraseña");
-        String password = sc.nextLine();
-        Boolean acess = false;
-
+        String password;
+        int tries=0;
         try {
-
-            if (bag.validateUserPassword(user_File_name, password) == 1) {
-                System.out.println("Login correcto");
-                System.out.println("Se han cargado " + bag.recoverBag(user_name) + " pokemons");
-                acess = true;
-
-            } else if (bag.validateUserPassword(user_File_name, password) == 0) {
-                System.out.println("Contraseña incorrecta");
-
-            }
-
-        } catch (FileNotFoundException ex) {
-            System.err.println("El usuario no existe");
-            System.out.println("Se añade nuevo usuario " + user_name);
-            acess = true;
-
-            try {
-                bag.newUserLogin(user_File_name, password);
-            } catch (IOException ex1) {
-                System.err.println("Error al crear usuario");
-            }
-
+            do{
+                System.out.println("Introduce la contraseña");
+                password = sc.nextLine();
+                try {
+                    
+                    if (bag.validateUserPassword(user_File_name, password) == 1) {
+                        System.out.println("Login correcto");
+                        System.out.println("Se han cargado " + bag.recoverBag(user_name) + " pokemons");
+                        acess = true;
+                        
+                    } else if (bag.validateUserPassword(user_File_name, password) == 0) {
+                        System.err.println("Contraseña incorrecta");
+                        tries++;
+                    }
+                    
+                } catch (FileNotFoundException ex) {
+                    System.err.println("El usuario no existe");
+                    System.out.println("Se añade nuevo usuario " + user_name);
+                    acess = true;
+                    
+                    try {
+                        bag.newUserLogin(user_File_name, password);
+                    } catch (IOException ex1) {
+                        System.err.println("Error al crear usuario");
+                    }
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("Objeto no encontrado.");
+                }
+                if(tries == 3){
+                    System.err.println("Demasiados intentos...");
+                }
+            }while(bag.validateUserPassword(user_File_name, password) == 0 && tries != 3);
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error, archivo no leído.");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Objeto no encontrado.");
+            System.err.println("Error archivo no encontrado.");
         }
         return acess;
     }
