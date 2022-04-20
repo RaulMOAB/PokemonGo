@@ -62,7 +62,7 @@ public class FilePersistence {
     public static boolean transfer(String user_name, Pokemon aux) throws FileNotFoundException, IOException {
         FileOutputStream write;
         write = new FileOutputStream(FILE_TRANSFER + user_name + ".dat");
-        ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
+        ObjectOutputStream StreamData = new ObjectOutputStream(write);
         StreamData.writeObject(aux);
         return true;
 
@@ -83,6 +83,19 @@ public class FilePersistence {
         } else {
             return false;
         }
+    }
+
+    public static File[] readPlayers() throws FileNotFoundException {
+      
+       File players = new File(FILE_BAG);//"users/mochilas/"
+      
+        if (players.isDirectory()) {
+           File[] playerList = players.listFiles();
+           return playerList;
+        }else{
+            return null;
+        }
+        
     }
 
 }

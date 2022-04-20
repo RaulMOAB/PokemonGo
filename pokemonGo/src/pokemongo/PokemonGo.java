@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -58,6 +60,9 @@ public class PokemonGo {
                 case 4:
                     getPokemon(user_name);
                     break;
+                case 5:
+                    displayPlayers();
+                    break;
                 case 0:
                     saveAndExit(user_name);
                     break;
@@ -82,6 +87,13 @@ public class PokemonGo {
 
     }
 
+    /**
+     * Método para loguearse, si el usuario n oexiste se creará uno Permite o no
+     * el inicio de sesión si la contraseña es correcta
+     *
+     * @return true si es valido para loguearse, false si la contraseña es
+     * incorrecta
+     */
     private boolean login() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Introduzca el nombre de usuario");
@@ -122,6 +134,10 @@ public class PokemonGo {
         return acess;
     }
 
+    /**
+     * Método para cazar un Pokemon salvaje, primero aparece y luego el usuario
+     * decide si cazarlo o no
+     */
     private void catchPokemon() {
         try {
             Pokemon wildPokemon = bag.appearsPokemon();
@@ -142,9 +158,15 @@ public class PokemonGo {
         main_menu.add(new Option("Listar Pokemons de la mochila"));
         main_menu.add(new Option("Transefir Pokemon"));
         main_menu.add(new Option("Recibir Pokemon"));
+        main_menu.add(new Option("Listar Entrenadores Pokemon"));
 
     }
 
+    /**
+     * Se muestran los Pokemons en formato ascii
+     *
+     * @param wildPokemon Pokemon salvaje que aparece
+     */
     private void displayPokemonAscii(Pokemon wildPokemon) {
         File readFile = new File("pokemons/ascii/" + wildPokemon.getName() + ".pok");
         try {
@@ -174,6 +196,12 @@ public class PokemonGo {
         System.out.println("Pokemons en la mochila:" + bag.getNumPokemon());
     }
 
+    /**
+     * Método de caza de Pokemons en el que el usuario debe inbtroduce un número
+     * sio es correcto lo caza
+     *
+     * @param wildPokemon
+     */
     private void huntPokemon(Pokemon wildPokemon) {
         Random r = new Random();
         Scanner sc = new Scanner(System.in);
@@ -208,6 +236,13 @@ public class PokemonGo {
         }
     }
 
+    /**
+     * Metodo en el que se decide si cazar un Pokemon ya existente en la mochila
+     *
+     * @param exist comprobación de que exista en la mochila
+     * @param wildPokemon Pokemon salvaje qeu aparece
+     * @return true si lo quiere cazar, false si decide no cazarlo
+     */
     private boolean decision(boolean exist, Pokemon wildPokemon) {
         if (exist) {
             char answer;
@@ -225,6 +260,11 @@ public class PokemonGo {
         }
     }
 
+    /**
+     * Método para transferir un Pokemon a otro jugador
+     *
+     * @param user_name nombre del usuario que va a transferir el Pokemon
+     */
     private void transferPokemon(String user_name) {
         Scanner sc = new Scanner(System.in);
         System.out.println("¿A qué jugador quieres transferir un Pokemon?");
@@ -255,6 +295,11 @@ public class PokemonGo {
 
     }
 
+    /**
+     * Método para recibir el Pokemon transferido de otro usuario
+     *
+     * @param user_name nombre de usuari ode la sesión activa
+     */
     private void getPokemon(String user_name) {
         try {
             Pokemon pokemonTransfered = bag.getTransferedPokemon(user_name);
@@ -273,6 +318,19 @@ public class PokemonGo {
             System.err.println("Error al leer el archivo.");
         } catch (ClassNotFoundException ex) {
             System.err.println("Objeto no encontrado.");
+        }
+    }
+
+    private void displayPlayers() {
+        try {
+            
+            for (File player : bag.getPlayers()) {
+                System.out.format("\t %s"+player.getName().replace("_mochila.dat", ""));
+
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
