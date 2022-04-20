@@ -14,10 +14,10 @@ import java.util.ArrayList;
  * @author alumne
  */
 public interface Basic_operations {
-    public Pokemon appearsPokemon() throws FileNotFoundException;//aparece pokemon
+    public Pokemon appearsPokemon() throws FileNotFoundException;//pokemon salvaje aparece
     public boolean catchPokemon(int key, int answer, Pokemon wild);
     public ArrayList<Pokemon> displayBag();
     public Pokemon transferPokemon(String user_name, Pokemon pok)throws FileNotFoundException, IOException, ClassNotFoundException;
-    public void getTransferedPokemon(String user_transfer)throws IOException, ClassNotFoundException;//recibir pokemon transferido
-    public int getAmount();
+    public Pokemon getTransferedPokemon(String user_transfer)throws IOException, ClassNotFoundException;
+    public int getNumPokemon();
 }

@@ -24,24 +24,20 @@ public class FilePersistence {
 
     private final static String FILE_NAME = "_mochila.dat";
     private final static String FILE_TRANSFER = "pokemons/transfers/";
+    private final static String FILE_BAG = "users/mochilas/";
 
-    //poner carpeta como atributo
     public static boolean saveBag(ArrayList<Pokemon> bag, String user_name) throws FileNotFoundException, IOException {
         FileOutputStream write;
-        write = new FileOutputStream("users/mochilas/" + user_name + FILE_NAME);
+        write = new FileOutputStream(FILE_BAG + user_name + FILE_NAME);
         ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(bag);
-
         return true;
     }
 
     public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream file = new FileInputStream("users/mochilas/" + user_name + FILE_NAME);
-
+        FileInputStream file = new FileInputStream(FILE_BAG + user_name + FILE_NAME);
         ObjectInputStream StreamData = new ObjectInputStream(file);
-
         ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
-
         return read;
     }
 
@@ -65,22 +61,28 @@ public class FilePersistence {
 
     public static boolean transfer(String user_name, Pokemon aux) throws FileNotFoundException, IOException {
         FileOutputStream write;
-        write = new FileOutputStream("pokemons/transfers/" + user_name + ".dat");
+        write = new FileOutputStream(FILE_TRANSFER + user_name + ".dat");
         ObjectOutputStream StreamData = new ObjectOutputStream(write);//si no existe lo crea
         StreamData.writeObject(aux);
         return true;
 
     }
 
-    public static ArrayList<Pokemon>  readTransferFile(String user_transfer) throws FileNotFoundException, IOException, ClassNotFoundException {
-        
-        FileInputStream file = new FileInputStream(FILE_TRANSFER + user_transfer  + ".dat");
-
+    public static Pokemon readTransferFile(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream file = new FileInputStream(FILE_TRANSFER + user_name + ".dat");
         ObjectInputStream StreamData = new ObjectInputStream(file);
-
-        ArrayList<Pokemon> pokemonTransfered =  (ArrayList<Pokemon>) StreamData.readObject();//algo falla aqui
-
+        Pokemon pokemonTransfered = (Pokemon) StreamData.readObject();
         return pokemonTransfered;
+    }
+
+    public static boolean deleteFile(String user_name) {
+        File fileToDelete = new File(FILE_TRANSFER + user_name + ".dat");
+        if (fileToDelete.exists()) {
+            fileToDelete.delete();
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

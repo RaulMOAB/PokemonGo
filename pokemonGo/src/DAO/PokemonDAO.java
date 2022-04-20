@@ -12,8 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,20 +19,21 @@ import java.util.logging.Logger;
  */
 public class PokemonDAO implements Basic_operations {
 
-    private ArrayList<String> nameList = new ArrayList<>();
+    private final ArrayList<String> pokemonNameList = new ArrayList<>();
     private ArrayList<Pokemon> pokemonBag = new ArrayList<>();
 
     @Override
     public Pokemon appearsPokemon() throws FileNotFoundException {
-        Pokemon wildPokemon = FilePersistence.catchWildPokemon(nameList);
-        
-       return wildPokemon;
+        Pokemon wildPokemon = FilePersistence.catchWildPokemon(pokemonNameList);
+        return wildPokemon;
     }
-    public boolean catchPokemon(int key, int answer, Pokemon wild){
-        if(key==answer){
+
+    @Override
+    public boolean catchPokemon(int key, int answer, Pokemon wild) {
+        if (key == answer) {
             pokemonBag.add(wild);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -45,30 +44,27 @@ public class PokemonDAO implements Basic_operations {
     }
 
     @Override
-    public Pokemon transferPokemon(String user_name, Pokemon aux)throws FileNotFoundException, IOException, ClassNotFoundException {
-          int index = pokemonBag.indexOf(aux);
-          System.out.println("Indice encontrado " + index);
-          if (index != -1) {// encuentra el pokemon a transferir
+    public Pokemon transferPokemon(String user_name, Pokemon aux) throws FileNotFoundException, IOException, ClassNotFoundException {
+        int index = pokemonBag.indexOf(aux);
+        if (index != -1) {// encuentra el pokemon a transferir
             FilePersistence.transfer(user_name, aux);
-            //si ha ido bien borras por posicion
             return pokemonBag.remove(index);
-        }else{
-              return null;
-          }
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void getTransferedPokemon(String user_transfer) throws IOException, ClassNotFoundException{
-        System.out.println(user_transfer);
-            FilePersistence.readTransferFile(user_transfer);
-   
+    public Pokemon getTransferedPokemon(String user_name) throws IOException, ClassNotFoundException, FileNotFoundException {
+        Pokemon pokemonTransfered = FilePersistence.readTransferFile(user_name);
+        FilePersistence.deleteFile(user_name);
+        return pokemonTransfered;
     }
 
-    public int validateUser(String user_name, String password) throws FileNotFoundException, IOException {
+    public int validateUserPassword(String user_name, String password) throws FileNotFoundException, IOException {
         File users = new File("users/" + user_name);
         Scanner file = new Scanner(users);
-
-        if (users.exists()) {//
+        if (users.exists()) {//validamos contraseña
             String pass = "";
             while (file.hasNext()) {
                 pass = file.nextLine();
@@ -83,7 +79,6 @@ public class PokemonDAO implements Basic_operations {
         } else {
             return -1; //no existe user
         }
-
     }
 
     public void newUserLogin(String user_name, String password) throws IOException {
@@ -93,35 +88,38 @@ public class PokemonDAO implements Basic_operations {
     }
 
     @Override
-    public int getAmount() {
+    public int getNumPokemon() {
         return pokemonBag.size();
     }
 
     public int getDifficult(Pokemon wildPokemon) {
         int i = wildPokemon.getCP() / 10;
-        if(i==0){
-            i=1;
+        if (i == 0) {
+            i = 1;
         }
         return i;
     }
-    
-      public int userBag(String user_name) throws IOException{
-       if( FilePersistence.saveBag(pokemonBag, user_name)){
-           return pokemonBag.size();
-       }else{
-           return 0;
-       }
-    }
-    
-    public int recoverBag(String user_name) throws IOException, FileNotFoundException, ClassNotFoundException{
-      pokemonBag = FilePersistence.readBag(user_name);
 
-      return pokemonBag.size();
+    public int userBag(String user_name) throws IOException {
+        if (FilePersistence.saveBag(pokemonBag, user_name)) {
+            return pokemonBag.size();
+        } else {
+            return 0;
+        }
     }
 
-    public boolean existPokemonInMyBag(Pokemon wildPokemon) {
+    public int recoverBag(String user_name) throws IOException, FileNotFoundException, ClassNotFoundException {
+        pokemonBag = FilePersistence.readBag(user_name);
+        return pokemonBag.size();
+    }
+
+    public boolean isPokemonInBag(Pokemon wildPokemon) {
         return pokemonBag.contains(wildPokemon);
     }
 
+    public boolean checkUserName(String user_transfer) {
+        File validate = new File("users/user_" + user_transfer + ".dat");
+        return validate.exists();
+    }
 
 }
