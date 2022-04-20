@@ -5,6 +5,7 @@
 package Objects;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -52,8 +53,7 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
     @Override
     public int compareTo(Pokemon o) {
         int compare = getName().compareTo(o.getName()); 
-        if( compare == 0 ) {
-            // si compare es 0 significa que su nombre es igual, compara y retorna en base a CP
+        if( compare == 0 ) { // si compare es 0 significa que su nombre es igual, compara y retorna en base a CP
             return getCP() - o.getCP(); //al restar va a dar negativo si es inferior al CP, positivo si es superior al CP o 0 si son iguales en CP
         } else {
            return compare;
@@ -61,14 +61,24 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
     }
 
     @Override
-    public boolean equals(Object obj) {//esta un poco raro puesto
-        boolean exist = false;
-        if(obj instanceof Pokemon){
-            Pokemon p = (Pokemon) obj;
-            exist=this.name.equalsIgnoreCase(p.name);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        return exist;
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Pokemon other = (Pokemon) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
     }
+
+   
     
     
     

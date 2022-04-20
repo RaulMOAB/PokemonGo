@@ -122,7 +122,7 @@ public class PokemonDAO implements Basic_operations {
         return validate.exists();
     }
 
-    public File[] getPlayers() throws FileNotFoundException {
+    public ArrayList<String> getPlayers() throws FileNotFoundException {
           return FilePersistence.readPlayers();
     }
 

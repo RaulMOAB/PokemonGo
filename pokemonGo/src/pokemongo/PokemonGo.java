@@ -320,17 +320,21 @@ public class PokemonGo {
             System.err.println("Objeto no encontrado.");
         }
     }
-
+//testear más a fondo
     private void displayPlayers() {
         try {
-            
-            for (File player : bag.getPlayers()) {
-                System.out.format("\t %s"+player.getName().replace("_mochila.dat", ""));
-
+            bag.recoverBag(user_name);
+            int i = 1;
+            for (String player : bag.getPlayers()) {
+                System.out.println("Entrenador " + i + "\t " +player.toUpperCase() + "\t" + bag.recoverBag(player) + " Pokemons en la mochila");
+                i++;
+                bag.userBag(player);
             }
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al leer el fichero");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.err.println("Error al encontrar en objeto");
         }
     }
 }

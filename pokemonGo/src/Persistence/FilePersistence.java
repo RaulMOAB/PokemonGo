@@ -85,13 +85,17 @@ public class FilePersistence {
         }
     }
 
-    public static File[] readPlayers() throws FileNotFoundException {
-      
+    public static ArrayList<String> readPlayers() throws FileNotFoundException {
+      ArrayList<String> playerNameList = new ArrayList<>();
        File players = new File(FILE_BAG);//"users/mochilas/"
       
         if (players.isDirectory()) {
            File[] playerList = players.listFiles();
-           return playerList;
+            for (File file : playerList) {
+               String format_name = file.getName().replace("_mochila.dat", "");
+               playerNameList.add(format_name);
+            }
+           return playerNameList;
         }else{
             return null;
         }
