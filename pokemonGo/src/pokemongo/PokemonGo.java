@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -347,7 +345,7 @@ public class PokemonGo {
     }
 
     private void saveBagJSON(String user_name) {
-         
+         System.out.println("");
     }
 
    
