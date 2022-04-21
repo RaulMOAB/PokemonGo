@@ -16,7 +16,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import org.json.simple.JSONObject;
+
 
 /**
  *
@@ -185,14 +185,7 @@ public class FilePersistence {
     }
 
     public static boolean saveBagJSON(ArrayList<Pokemon> JSON_bag,String user_name) throws FileNotFoundException, IOException {
-        FileWriter writeJSON = new FileWriter(FILE_BAG + user_name + FILE_NAME);
-        JSONObject json_bag = new JSONObject();
-        
-        json_bag.writeJSONString(writeJSON);
-        for (Pokemon pokemon : JSON_bag) {
-            System.out.println(pokemon.toString());
-        }
-        
+      
         return true;
         
     }
