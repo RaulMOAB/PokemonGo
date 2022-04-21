@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -182,6 +183,10 @@ public class PokemonDAO implements Basic_operations {
 
     public boolean getJSONBag(String user_name) throws IOException {
           return FilePersistence.saveBagJSON(pokemonBag, user_name);
+    }
+
+    public List loadJSON(String user_name) throws IOException {
+         return FilePersistence.loadJSONBag(user_name);
     }
 
 }

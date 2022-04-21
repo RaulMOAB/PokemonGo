@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -63,6 +65,9 @@ public class PokemonGo {
                     break;
                 case 6:
                     saveBagJSON(user_name);
+                    break;
+                case 7:
+                    loadBagJSON(user_name);
                     break;
                 case 0:
                     saveAndExit(user_name);
@@ -165,7 +170,7 @@ public class PokemonGo {
         main_menu.add(new Option("Recibir Pokemon"));
         main_menu.add(new Option("Listar Entrenadores Pokemon"));
         main_menu.add(new Option("Guardar mochila en formato JSON"));
-        main_menu.add(new Option("Cargar mochila nn formato JSON"));
+        main_menu.add(new Option("Cargar mochila en formato JSON"));
 
     }
 
@@ -345,8 +350,26 @@ public class PokemonGo {
     }
 
     private void saveBagJSON(String user_name) {
-         System.out.println("");
+        try {
+            if (bag.getJSONBag(user_name)) {
+                System.out.println("Mochila guardada en formato JSON");
+            } else {
+                System.err.println("Error al guardar la mochila en formato JSON");
+            }
+
+        } catch (IOException ex) {
+            System.err.println("Error al guardar archivo.");
+        }
     }
 
-   
+    private void loadBagJSON(String user_name) {
+
+        try {
+            System.out.println( bag.loadJSON(user_name) );
+        } catch (IOException ex) {
+            System.err.println("Error al encontrar fichero, debes guardar previamente la mochila");
+        }
+
+    }
+
 }

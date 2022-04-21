@@ -5,17 +5,22 @@
 package Persistence;
 
 import Objects.Pokemon;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
 
 /**
  *
@@ -26,6 +31,7 @@ public class FilePersistence {
     private final static String FILE_NAME = "_mochila.dat";
     private final static String FILE_TRANSFER = "pokemons/transfers/";
     private final static String FILE_BAG = "users/mochilas/";
+    private final static String FILE_JSON_BAG = "users/mochilasJson/";
 
     /**
      * Creara un fichero en la ruta de mochilas, el archivo contendra en el
@@ -183,9 +189,36 @@ public class FilePersistence {
 
     }
 
-    public static boolean saveBagJSON(ArrayList<Pokemon> JSON_bag,String user_name) throws FileNotFoundException, IOException {
-      
+    public static boolean saveBagJSON(ArrayList<Pokemon> JSON_bag, String user_name)  {
+        Gson json_bag = new Gson();
+        String json = json_bag.toJson(JSON_bag);
+        FileWriter write_json;
+        try {
+            write_json = new FileWriter(FILE_JSON_BAG + user_name + ".json");
+            write_json.write(json);
+            write_json.close();
+        } catch (IOException ex) {
+           return false;        }
+        
         return true;
+
+    }
+
+    public static List loadJSONBag(String user_name) throws FileNotFoundException, IOException {
+        String file = "";
+        BufferedReader br = new BufferedReader(new FileReader(FILE_JSON_BAG + user_name + ".json"));
+        String line;
+        
+        while((line = br.readLine()) != null){
+            file += line;
+        }
+        
+        br.close();
+        Gson read = new Gson();
+        List<Pokemon> aux;
+        aux = read.fromJson(file, new TypeToken<List<Pokemon>>() {}.getType());
+
+        return aux;
         
     }
 }
