@@ -63,6 +63,9 @@ public class PokemonGo {
                 case 5:
                     displayPlayers();
                     break;
+                case 6:
+                    saveBagJSON(user_name);
+                    break;
                 case 0:
                     saveAndExit(user_name);
                     break;
@@ -88,7 +91,7 @@ public class PokemonGo {
     }
 
     /**
-     * Método para loguearse, si el usuario n oexiste se creará uno Permite o no
+     * Método para loguearse, si el usuario no existe se creará uno Permite o no
      * el inicio de sesión si la contraseña es correcta
      *
      * @return true si es valido para loguearse, false si la contraseña es
@@ -101,28 +104,25 @@ public class PokemonGo {
         user_name = sc.nextLine();
         String user_File_name = "user_" + user_name + ".dat";
         String password;
-        int tries=0;
+        int login_try = 0;
         try {
-            do{
+            do {
                 System.out.println("Introduce la contraseña");
                 password = sc.nextLine();
                 try {
-                    
                     if (bag.validateUserPassword(user_File_name, password) == 1) {
                         System.out.println("Login correcto");
                         System.out.println("Se han cargado " + bag.recoverBag(user_name) + " pokemons");
                         acess = true;
-                        
+
                     } else if (bag.validateUserPassword(user_File_name, password) == 0) {
                         System.err.println("Contraseña incorrecta");
-                        tries++;
+                        login_try++;
                     }
-                    
                 } catch (FileNotFoundException ex) {
                     System.err.println("El usuario no existe");
                     System.out.println("Se añade nuevo usuario " + user_name);
                     acess = true;
-                    
                     try {
                         bag.newUserLogin(user_File_name, password);
                     } catch (IOException ex1) {
@@ -131,10 +131,10 @@ public class PokemonGo {
                 } catch (ClassNotFoundException ex) {
                     System.err.println("Objeto no encontrado.");
                 }
-                if(tries == 3){
+                if (login_try == 3) {
                     System.err.println("Demasiados intentos...");
                 }
-            }while(bag.validateUserPassword(user_File_name, password) == 0 && tries != 3);
+            } while (bag.validateUserPassword(user_File_name, password) == 0 && login_try != 3);
         } catch (IOException ex) {
             System.err.println("Error archivo no encontrado.");
         }
@@ -166,6 +166,8 @@ public class PokemonGo {
         main_menu.add(new Option("Transefir Pokemon"));
         main_menu.add(new Option("Recibir Pokemon"));
         main_menu.add(new Option("Listar Entrenadores Pokemon"));
+        main_menu.add(new Option("Guardar mochila en formato JSON"));
+        main_menu.add(new Option("Cargar mochila nn formato JSON"));
 
     }
 
@@ -327,21 +329,26 @@ public class PokemonGo {
             System.err.println("Objeto no encontrado.");
         }
     }
-//testear más a fondo
+
     private void displayPlayers() {
         try {
-            bag.recoverBag(user_name);
+            bag.userBag(user_name);
             int i = 1;
             for (String player : bag.getPlayers()) {
-                System.out.println("Entrenador " + i + "\t " +player.toUpperCase() + "\t" + bag.recoverBag(player) + " Pokemons en la mochila");
+                System.out.println("Entrenador " + i + "\t " + player.toUpperCase() + "\t" + bag.getNumOfPokemonBag(player) + " Pokemons en la mochila");
                 i++;
-                bag.userBag(player);
             }
-            
+
         } catch (FileNotFoundException ex) {
             System.err.println("Error al leer el fichero");
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println("Error al encontrar en objeto");
         }
     }
+
+    private void saveBagJSON(String user_name) {
+         
+    }
+
+   
 }

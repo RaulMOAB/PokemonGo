@@ -175,5 +175,13 @@ public class PokemonDAO implements Basic_operations {
     public ArrayList<String> getPlayers() throws FileNotFoundException {
           return FilePersistence.readPlayers();
     }
+    
+    public int getNumOfPokemonBag(String user_name) throws IOException, FileNotFoundException, ClassNotFoundException{
+        return FilePersistence.getNumPokemonInBag(user_name);
+    }
+
+    public boolean getJSONBag(String user_name) throws IOException {
+          return FilePersistence.saveBagJSON(pokemonBag, user_name);
+    }
 
 }
