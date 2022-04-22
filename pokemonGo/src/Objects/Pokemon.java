@@ -7,15 +7,21 @@ package Objects;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author alumne
  */
+//@XmlRootElement(name="pokemon")
+//@XmlType(propOrder={"name","CP"})
 public class Pokemon implements Serializable, Comparable<Pokemon>{
     private final String name;
     private int CP;
 
+    
     public Pokemon(String name) {
         this.name = name;
          setCP(CP);
@@ -25,16 +31,17 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
         this.name = name;
          setCP(CP);
     }
-
+    
+ 
     public int setCP(int CP) {
         Random r = new Random();
         return this.CP = r.nextInt(100) + 1;
     }
-
+    //@XmlElement(name="name")
     public String getName() {
         return name;
     }
-
+    //@XmlElement(name="CP")
     public int getCP() {
         return CP;
     }
@@ -47,8 +54,13 @@ public class Pokemon implements Serializable, Comparable<Pokemon>{
 
     @Override
     public String toString() {
+        return "Pokemon{" + "name=" + name + ", CP=" + CP + '}';
+    }
+
+    public String toData(){
         return "\t"+ name + "\t"+ " CP: " + CP;
     }
+    
 
     @Override
     public int compareTo(Pokemon o) {

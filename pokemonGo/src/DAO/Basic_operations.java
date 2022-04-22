@@ -34,7 +34,7 @@ public interface Basic_operations {
     /**
      * @return ArrayList  de los pokemons (Mochila).
      */
-    public ArrayList<Pokemon> displayBag();
+    public ArrayList<Pokemon> getPokemonBag();
     
     /**
      * Usuario hara una transferencia creando un archivo con el Pokemon pasado, llamado por el nombre del usuario al que se lo quiere transferir.

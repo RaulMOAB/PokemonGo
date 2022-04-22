@@ -10,19 +10,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author alumne
  */
+//@XmlRootElement(name="mochila")
 public class PokemonDAO implements Basic_operations {
 
     private final ArrayList<String> pokemonNameList = new ArrayList<>();
     private ArrayList<Pokemon> pokemonBag = new ArrayList<>();
 
+    public PokemonDAO() {
+    }
     /**
      * 
      * @return
@@ -33,6 +41,11 @@ public class PokemonDAO implements Basic_operations {
         Pokemon wildPokemon = FilePersistence.catchWildPokemon(pokemonNameList);
         return wildPokemon;
     }
+    
+     public Pokemon appearsChosenPokemon(String Nombre) throws FileNotFoundException {
+        return new Pokemon(Nombre);
+    }
+     
 
     @Override
     public boolean catchPokemon(int key, int answer, Pokemon wild) {
@@ -44,8 +57,11 @@ public class PokemonDAO implements Basic_operations {
         }
     }
 
+   
     @Override
-    public ArrayList<Pokemon> displayBag() {
+     //@XmlElementWrapper(name="pokemons")
+    //@XmlElement(name="pokemon")
+    public ArrayList<Pokemon> getPokemonBag() {
         return pokemonBag;
     }
 
@@ -187,6 +203,30 @@ public class PokemonDAO implements Basic_operations {
 
     public List loadJSON(String user_name) throws IOException {
          return FilePersistence.loadJSONBag(user_name);
+    }
+
+    public int readXMLBag(String user_name) throws FileNotFoundException, JAXBException, IOException, Exception {
+        boolean savedInXMl=FilePersistence.BagToXML(user_name,pokemonBag);
+        if(savedInXMl){
+            return pokemonBag.size();
+        }else{
+            return 0;
+        }
+        
+    }
+
+    public boolean saveXMLBag(String user_name) throws JAXBException, IOException {
+        if(FilePersistence.saveBagXML(user_name)!=null){
+            pokemonBag = FilePersistence.saveBagXML(user_name);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public ArrayList<String> giveListOfPokemonsFile() throws FileNotFoundException {
+        return FilePersistence.readFilesOfPokemonsNames();
     }
 
 }
