@@ -189,4 +189,12 @@ public class PokemonDAO implements Basic_operations {
          return FilePersistence.loadJSONBag(user_name);
     }
 
+    public boolean deletePokemonInBag(String user_name, int poke_index) {
+         if (pokemonBag.remove(poke_index) != null) {
+            return true;
+        }else{
+             return false;
+         }
+    }
+
 }

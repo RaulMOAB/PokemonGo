@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * @author alumne
  */
-public class Pokemon implements Serializable, Comparable<Pokemon>{
+public  class Pokemon implements Serializable, Comparable<Pokemon>{
     private final String name;
     private int CP;
 

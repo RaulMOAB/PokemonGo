@@ -69,6 +69,9 @@ public class PokemonGo {
                 case 7:
                     loadBagJSON(user_name);
                     break;
+                case 8:
+                   deletePokemon(user_name);
+                    break;
                 case 0:
                     saveAndExit(user_name);
                     break;
@@ -171,6 +174,7 @@ public class PokemonGo {
         main_menu.add(new Option("Listar Entrenadores Pokemon"));
         main_menu.add(new Option("Guardar mochila en formato JSON"));
         main_menu.add(new Option("Cargar mochila en formato JSON"));
+        main_menu.add(new Option("Liberar Pokemon de la mochila"));
 
     }
 
@@ -365,11 +369,44 @@ public class PokemonGo {
     private void loadBagJSON(String user_name) {
 
         try {
-            System.out.println( bag.loadJSON(user_name) );
+            System.out.println(bag.loadJSON(user_name));
         } catch (IOException ex) {
             System.err.println("Error al encontrar fichero, debes guardar previamente la mochila");
         }
 
+    }
+/**
+ * Método para liberar un pokemon de la mochila seún su posición
+ * Actualiza el número de pokemons de la mochila y lo muestra al usuario
+ * @param user_name 
+ * Función programada por Raúl y Alvin al 50% cada uno
+ */
+    private void deletePokemon(String user_name) {
+        Scanner sc = new Scanner(System.in);
+        int index = displayIndexPokemon();
+        
+        int poke_index;
+        do {
+            System.out.println("¿Qué Pokemon deseas liberar?");
+            poke_index = sc.nextInt() - 1;
+            
+        } while (poke_index != 0 && poke_index > index);
+
+        if (bag.deletePokemonInBag(user_name, poke_index)) {
+            System.out.println("Pokemon liberado correctamente");
+            System.out.println("Número de Pokemon en la mochila " + bag.getNumPokemon());
+        }else{
+            System.err.println("Error al eliminar el Pokemon");
+        }
+        
+    }
+
+    private int displayIndexPokemon() {
+            ArrayList<Pokemon> pokemonIndex = bag.displayBag();
+            for (int i = 0; i < pokemonIndex.size(); i++) {
+                System.out.println((i + 1) +" - "+ pokemonIndex.get(i).getName() + "\t"+ pokemonIndex.get(i).getCP());
+        }
+            return pokemonIndex.size();
     }
 
 }
