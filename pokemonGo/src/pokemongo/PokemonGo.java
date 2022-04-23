@@ -17,7 +17,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
 
 /**
  *
@@ -70,17 +69,6 @@ public class PokemonGo {
                 case 7:
                     loadBagJSON(user_name);
                     break;
-                case 8:
-                    saveXmlToBag(user_name);
-                    break;
-                case 9:
-                {
-                    loadBagToXML(user_name);
-                }
-                    break;
-
-                case 10:
-                    choosePokemon();
                 case 0:
                     saveAndExit(user_name);
                     break;
@@ -165,6 +153,7 @@ public class PokemonGo {
             Pokemon wildPokemon = bag.appearsPokemon();
             if (wildPokemon != null) {
                 displayPokemonAscii(wildPokemon);
+                System.out.println(wildPokemon.toString());
                 huntPokemon(wildPokemon);
             }
 
@@ -182,9 +171,6 @@ public class PokemonGo {
         main_menu.add(new Option("Listar Entrenadores Pokemon"));
         main_menu.add(new Option("Guardar mochila en formato JSON"));
         main_menu.add(new Option("Cargar mochila en formato JSON"));
-        main_menu.add(new Option("Guardar mochila en formato XML"));
-        main_menu.add(new Option("Cargar mochila en formato XML"));
-        main_menu.add(new Option("Elegir Pokemon a capturar"));
 
     }
 
@@ -193,7 +179,7 @@ public class PokemonGo {
      *
      * @param wildPokemon Pokemon salvaje que aparece
      */
-    private boolean displayPokemonAscii(Pokemon wildPokemon) {
+    private void displayPokemonAscii(Pokemon wildPokemon) {
         File readFile = new File("pokemons/ascii/" + wildPokemon.getName() + ".pok");
         try {
             Scanner asciiPokemon = new Scanner(readFile);
@@ -201,21 +187,19 @@ public class PokemonGo {
                 String ascii = asciiPokemon.nextLine();
                 String pokeFormat = ascii.replace("printf(\"", "");
                 System.out.println(pokeFormat);
+
             }
-            System.out.println(wildPokemon.toData());
-            return true;
         } catch (FileNotFoundException ex) {
-            System.err.println("Pokemon no existe.");
-            return false;
+            System.err.println("Error al leer archivo.");
         }
 
     }
 
     private void displayMyBag() {
-        ArrayList<Pokemon> mybag = bag.getPokemonBag();
+        ArrayList<Pokemon> mybag = bag.displayBag();
         Collections.sort(mybag);
         for (Pokemon pokemon : mybag) {
-            System.out.println(pokemon.toData());
+            System.out.println(pokemon.toString());
         }
         displayAmountOfPokemons();
     }
@@ -386,57 +370,6 @@ public class PokemonGo {
             System.err.println("Error al encontrar fichero, debes guardar previamente la mochila");
         }
 
-    }
-
-    private void saveXmlToBag(String user_name) {
-        try {
-            if(bag.saveXMLBag(user_name)){
-                System.out.println("Se han cargado "+bag.getNumPokemon()+" pokemons");
-            }  
-        }catch (FileNotFoundException ex){
-            System.err.println("No se encuentra ningun xml para tu mochila");
-        } catch (JAXBException ex) {
-            System.err.println("Ha ocoriido un error al guardar tu mochila.");
-        } catch (IOException ex) {
-            Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    }
-
-    private void loadBagToXML(String user_name) {
-        try {
-            System.out.println("Se han guardado "+bag.readXMLBag(user_name)+" pokemons correctamente");
-        } catch (JAXBException ex) {
-            System.err.println("No se ha podido cargar tu mochila en XML.");
-        } catch(FileNotFoundException ex){
-            System.err.println("Fichero no encontrado");
-        } catch (IOException ex) {
-            System.err.println("No se ha podido cargar tu mochila en XML.");
-        } catch (Exception ex) {
-            System.err.println("No se ha podido cargar tu mochila en XML.");
-        }
-    }
-
-    private void choosePokemon() {
-        try {
-            ArrayList<String>lista_pokemon=bag.giveListOfPokemonsFile();
-            mostrarPokemons(lista_pokemon);
-            System.out.println("Que pokemon quieres cazar?");
-            Scanner sc = new Scanner(System.in);
-            String pokemon_name = sc.nextLine();
-            String format_name = pokemon_name.toUpperCase().charAt(0) + pokemon_name.substring(1, pokemon_name.length()).toLowerCase();
-            Pokemon chosenPokemon = bag.appearsChosenPokemon(format_name);
-            if(displayPokemonAscii(chosenPokemon)){
-                huntPokemon(chosenPokemon);
-            }
-        } catch (FileNotFoundException ex) {
-            System.err.println("Fichero no encontrado");
-        }
-    }
-
-    private void mostrarPokemons(ArrayList<String> lista_pokemon) {
-        for (int i = 0; i < lista_pokemon.size(); i++) {
-            System.out.println((i+1)+"-"+lista_pokemon.get(i));
-        }
     }
 
 }

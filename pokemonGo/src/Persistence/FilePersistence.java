@@ -4,14 +4,9 @@
  */
 package Persistence;
 
-import DAO.PokemonDAO;
 import Objects.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,10 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -41,8 +32,6 @@ public class FilePersistence {
     private final static String FILE_TRANSFER = "pokemons/transfers/";
     private final static String FILE_BAG = "users/mochilas/";
     private final static String FILE_JSON_BAG = "users/mochilasJson/";
-    private final static String FILE_XML_BAG = "users/mochilasXml/";
-    private final static String FILE_ASCII_POK = "pokemons/ascii/";
 
     /**
      * Creara un fichero en la ruta de mochilas, el archivo contendra en el
@@ -78,8 +67,7 @@ public class FilePersistence {
     public static ArrayList<Pokemon> readBag(String user_name) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(FILE_BAG + user_name + FILE_NAME);
         ObjectInputStream StreamData = new ObjectInputStream(file);
-        ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();//Problema del xml
-        StreamData.close();
+        ArrayList<Pokemon> read = (ArrayList<Pokemon>) StreamData.readObject();
         return read;
     }
 
@@ -232,48 +220,5 @@ public class FilePersistence {
 
         return aux;
         
-    }
-
-    public static boolean BagToXML(String user_name,ArrayList<Pokemon> bag) throws JAXBException, FileNotFoundException, IOException,InstantiationException,Exception{
-        FileOutputStream filexml = new FileOutputStream(FILE_XML_BAG+user_name+".xml");
-        XMLEncoder xml = new XMLEncoder(filexml);
-        for (int i = 0; i < bag.size(); i++) {
-            xml.writeObject(bag.get(i));
-        }
-        xml.close();
-        System.out.println("Mochila guardada en un xml correctamente");
-//        JAXBContext context = JAXBContext.newInstance(PokemonDAO.class);
-//        Unmarshaller xmlToJava = context.createUnmarshaller();
-//        PokemonDAO pokedex =(PokemonDAO)xmlToJava.unmarshal(new File(FILE_XML_BAG+user_name+".xml"));
-//        return pokedex.getPokemonBag();
-        return true;
-    }
-
-    public static ArrayList<Pokemon> saveBagXML(String user_name) throws JAXBException, IOException{
-        FileInputStream savecustomers = new FileInputStream(FILE_XML_BAG+user_name+".xml");
-        BufferedInputStream bis = new BufferedInputStream(savecustomers);
-        XMLDecoder xml = new XMLDecoder(bis);
-        PokemonDAO bag =(PokemonDAO) xml.readObject();
-        xml.close();
-        
-//            JAXBContext context = JAXBContext.newInstance(Pokemon.class);
-//            Marshaller marshaller = context.createMarshaller();
-//            PokemonDAO pokedex = new PokemonDAO();
-//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//            marshaller.marshal(pokedex, new FileWriter(FILE_XML_BAG+user_name+".xml"));
-//            saved = true;
-        
-        return null;
-    }
-
-    public static ArrayList<String> readFilesOfPokemonsNames() throws FileNotFoundException {
-        ArrayList<String> nombres= new ArrayList<String>();
-        //nombres.add(new File(FILE_ASCII_POK+"Bul"))
-        File carpeta = new File(FILE_ASCII_POK);
-        String[] pokemons = carpeta.list();
-        for (int i = 0; i < pokemons.length; i++) {
-            nombres.add(pokemons[i].replace(".pok", ""));  
-        }
-        return nombres;
     }
 }
