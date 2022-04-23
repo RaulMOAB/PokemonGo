@@ -15,6 +15,7 @@ import java.util.Random;
 public  class Pokemon implements Serializable, Comparable<Pokemon>{
     private final String name;
     private int CP;
+    
 
     public Pokemon(String name) {
         this.name = name;
@@ -30,6 +31,8 @@ public  class Pokemon implements Serializable, Comparable<Pokemon>{
         Random r = new Random();
         return this.CP = r.nextInt(100) + 1;
     }
+    
+  
 
     public String getName() {
         return name;
