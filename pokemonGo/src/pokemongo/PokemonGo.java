@@ -417,46 +417,39 @@ public class PokemonGo {
         return pokemonIndex.size();
     }
 
+    /**
+     * Evolucionará Pokemon seleccionado que tenga por lo menos 3 repetidos.
+     * @param user_name Función programada por Raúl y Alvin al 50% cada uno
+     */
     private void evolvePokemon(String user_name) {
         Scanner sc = new Scanner(System.in);
         displayNonRepeatPokemon();
         System.out.println("¿Qué Pokemon quieres evolucionar?");
-        int select = sc.nextInt() - 1;
-
-        if (bag.numRepeatPokemon(select) >= 3) {
+        //int select = sc.nextInt() - 1;
+        String select = sc.nextLine();
+        String format_name = select.toUpperCase().charAt(0) + select.substring(1, select.length()).toLowerCase();
+        
+        if (bag.numRepeatPokemon(format_name) >= 3) {
             System.out.println("Evolucion disponible");
-            Pokemon aux = bag.getPokemonToEvolve(select);//bulbasaur
-            if (aux.getName().equalsIgnoreCase("Bulbasaur")) {// podria ser un switch kilometrico con todas las evoluciones
-                Pokemon evolution = new Pokemon("Ivysaur");
-                displayPokemonAscii(aux);
-                System.out.println(aux.getName() + " evoluciona a . . .");
-                if (bag.deletePokemonAfterEvo(aux)) {
-                    System.out.println("Se han eliminado 3 " + aux.getName() + " de la mochila");
-                } else {
-                    System.out.println("No se ha borrado ningún Pokemon");
-                }
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(PokemonGo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                displayPokemonAscii(evolution);
-                System.out.println(evolution.toString() + "!!");
-                if (bag.catchPokemon(0, 0, evolution)) {
-                    System.out.println("Se ha añadido " + evolution.toString() + " a tu mochila");
-                }
- 
+            Pokemon aux = bag.getPokemonToEvolve(format_name);
+            Pokemon evolution = bag.getEnvolvedPokemon(aux);
+            displayPokemonAscii(aux);
+            System.out.println(aux.getName() + " Evoluciona a . . .");
+            if (bag.deletePokemonAfterEvo(aux)) {
+                System.out.println("Se han eliminado 3 " + aux.getName() + " de la mochila");
             } else {
-                System.err.println("El pokemon que quieres evolucionar no coincide");//pones un nombre diferente
+                System.out.println("No se ha borrado ningún Pokemon");
             }
-
+            try {Thread.sleep(1000);} 
+            catch (InterruptedException ex) {System.err.println("Interrumpido.");}
+            displayPokemonAscii(evolution);
+            System.out.println(evolution.toString() + "!!");
+            if (bag.catchPokemon(0, 0, evolution)) {
+                System.out.println("Se ha añadido " + evolution.toString() + " a tu mochila");
+            }
         } else {
             System.out.println("No tienes 3 Pokemons o más repetidos");
-
         }
-
     }
 
     /**

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -214,10 +215,11 @@ public class PokemonDAO implements Basic_operations {
  * @param select index del Pokemon escogido por el usuario
  * @return número de Pokemons repetidos
  */
-    public int numRepeatPokemon(int select) {
+    public int numRepeatPokemon(String select) {
         int count = 0;
+        Pokemon aux = new Pokemon(select);
         for (int i = 0; i < pokemonBag.size(); i++) {
-            if (pokemonBag.get(i).getName().equals(pokemonBag.get(select).getName())) {
+            if (pokemonBag.get(i).getName().equals(aux.getName())) {
                 count++;
             }
         }
@@ -241,8 +243,20 @@ public class PokemonDAO implements Basic_operations {
         return pokeList;
     }
 
-    public Pokemon getPokemonToEvolve(int select) {
-        return pokemonBag.get(select);
+    /**
+     * Metodo para obtener el pokemon que quieres evolucionar.
+     * @param select
+     * @return Pokemon a evolucionar
+     */
+    public Pokemon getPokemonToEvolve(String select) {
+        Pokemon aux = new Pokemon(select);
+        for (int i = 0; i < pokemonBag.size(); i++) {
+            if (pokemonBag.get(i).getName().equals(aux.getName())) {
+                return pokemonBag.get(i);
+            }
+        }
+        return null;
+        
     }
 /**
  * Método para eliminar los 3 Pokemon iguales necesarios para evolucionar
@@ -260,6 +274,37 @@ public class PokemonDAO implements Basic_operations {
 
         }
         return true;
+    }
+    
+    /**
+     * Metodo para devolver un random del 100 al 300 para el CP de un pokemon evolucionado
+     * @param aux
+     * @return CP Random del 100 al 300.
+     */
+    private int getCPPokemonAfterEvo(){
+        Random r = new Random();
+        return r.nextInt(201)+100;
+    }
+    
+    /**
+     * Metodo para obtener el Pokemon evolucionado segun el que pokemon va a evolucionar
+     * @param aux
+     * @return Pokemon evolucionado
+     */
+    public Pokemon getEnvolvedPokemon(Pokemon aux){
+        if(aux.getName().equalsIgnoreCase("Bulbasaur")){
+            return new Pokemon("Ivysaur",getCPPokemonAfterEvo());
+        }else if(aux.getName().equalsIgnoreCase("Caterpie")){
+            return new Pokemon("Metapod",getCPPokemonAfterEvo());
+        }
+        else if(aux.getName().equalsIgnoreCase("Charmander")){
+            return new Pokemon("Charmaleon",getCPPokemonAfterEvo());
+        }
+        else if(aux.getName().equalsIgnoreCase("Squirtle")){
+            return new Pokemon("Wartortle",getCPPokemonAfterEvo());
+        }else{
+            return null;
+        }
     }
 
 }

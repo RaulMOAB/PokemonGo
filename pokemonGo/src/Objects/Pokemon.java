@@ -24,7 +24,7 @@ public  class Pokemon implements Serializable, Comparable<Pokemon>{
 
     public Pokemon(String name, int CP) {
         this.name = name;
-         setCP(CP);
+         this.CP=CP;
     }
 
     public int setCP(int CP) {
