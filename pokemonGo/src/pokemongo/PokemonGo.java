@@ -237,7 +237,6 @@ public class PokemonGo {
             int i = bag.getDifficult(wildPokemon);
             System.out.println("Numero del 1 a " + i);
             int key = r.nextInt(i) + 1;
-            System.out.println("chuleta:" + key);//Borrar
             int answer = sc.nextInt();
             boolean isHunted = bag.catchPokemon(key, answer, wildPokemon);
             if (isHunted) {
@@ -440,8 +439,10 @@ public class PokemonGo {
             } else {
                 System.out.println("No se ha borrado ningún Pokemon");
             }
+            
             try {Thread.sleep(1000);} 
             catch (InterruptedException ex) {System.err.println("Interrumpido.");}
+            
             displayPokemonAscii(evolution);
             System.out.println(evolution.toString() + "!!");
             if (bag.catchPokemon(0, 0, evolution)) {
